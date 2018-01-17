@@ -1513,6 +1513,7 @@ class LightboxReact extends Component {
                     onTouchMove={this.handleTouchMove}
                     onKeyDown={this.handleKeyInput}
                     onKeyUp={this.handleKeyInput}
+                    role='dialog'
                 >
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
