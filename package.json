@@ -1,5 +1,5 @@
 {
-  "name": "lightbox-react",
+  "name": "react-accessibile-lightbox",
   "version": "0.1.5",
   "description": "Lightbox for React components or images",
   "scripts": {
@@ -13,7 +13,7 @@
     "test": "webpack",
     "lint": "eslint src",
     "deploy": "npm run build && gh-pages -d build",
-    "prepublish": "npm run lint && npm run build:umd"
+    "prepublish": "npm run build:umd"
   },
   "main": "dist/umd/lightbox-react.js",
   "files": [
@@ -21,13 +21,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/treyhuffine/lightbox-react.git"
+    "url": "https://github.com/sachinisilva/lightbox-react.git"
   },
-  "homepage": "http://treyhuffine.com/lightbox-react/",
-  "bugs": "https://github.com/treyhuffine/lightbox-react/issues",
+  "homepage": "https://github.com/sachinisilva/lightbox-react.git",
+  "bugs": "https://github.com/sachinisilva/lightbox-react.git",
   "authors": [
-    "Trey Huffine",
-    "Chris Fritz <forked>"
+    "Sachini Silva",
+    "Trey Huffine <forked>"
   ],
   "license": "MIT",
   "dependencies": {
