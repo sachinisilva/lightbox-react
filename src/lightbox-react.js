@@ -381,7 +381,8 @@ class LightboxReact extends Component {
             fitSizes = this.getFitSizes(this.imageCache[imageSrc].width, this.imageCache[imageSrc].height, true);
         } else if (isReact.component(this.props[srcType]) || isReact.element(this.props[srcType])) {
             if (document.querySelectorAll('.inner').length > 0) {
-                const component = document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0];
+                const component = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
+                : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
                 let componentWidth = component.offsetWidth;
                 let componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth;
                 let fontSize = 18;
