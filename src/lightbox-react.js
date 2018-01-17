@@ -379,7 +379,7 @@ class LightboxReact extends Component {
             // Fall back to using thumbnail if the image has not been loaded
             imageSrc = this.props[`${srcType}Thumbnail`];
             fitSizes = this.getFitSizes(this.imageCache[imageSrc].width, this.imageCache[imageSrc].height, true);
-        } else if (isReact.component(this.props[srcType])) {
+        } else if (isReact.component(this.props[srcType]) || isReact.element(this.props[srcType])) {
             if (document.querySelectorAll('.inner').length > 0) {
                 const component = document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0];
                 let componentWidth = component.offsetWidth;
