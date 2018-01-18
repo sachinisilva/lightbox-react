@@ -393,10 +393,7 @@ class LightboxReact extends Component {
                     componentWidth = component.offsetWidth;
                     fontSize--;
                 }
-                fitSizes = {
-                    height: component.offsetWidth,
-                    width: component.offsetHeight
-                };
+                fitSizes = this.getFitSizes(component.offsetWidth, component.offsetHeight, true);
             }
         } else {
             return null;
