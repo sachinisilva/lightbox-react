@@ -6,16 +6,17 @@ See it in action on [gitconnected](https://gitconnected.com)
 
 A lightbox for React components or images. String passed as arguments are
 assumed to be the src for an image. Otherwise, it will check if the argument
-is able to be rended as a child React component of the lightbox.
+is able to be rendered as a child React component of the lightbox.
 
 [DEMO](http://treyhuffine.com/lightbox-react/)
 
-Originally forked from [fritz-c](https://github.com/fritz-c/react-image-lightbox)'s library
+Originally forked from [treyhuffine](https://github.com/treyhuffine/lightbox-react)'s library
 
 Features
 
 - Keyboard shortcuts (with rate limiting)
-- Image Zoom
+- Image/Component Zoom
+- Accessible
 - Flexible rendering using src values assigned on the fly
 - Image preloading for smoother viewing
 - Mobile friendly, with pinch to zoom and swipe (Thanks, [@webcarrot](https://github.com/webcarrot)!)
@@ -113,6 +114,9 @@ reactModalStyle     | Object |      `{}`      |          | Set `z-index` style, 
 imagePadding        | number |      `10`      |          | Padding (px) between the edge of the window and the lightbox
 clickOutsideToClose |  bool  |     `true`     |          | When true, clicks outside of the image close the lightbox
 enableZoom          |  bool  |     `true`     |          | Set to false to disable zoom functionality and hide zoom buttons
+zoomOutButtonAriaLabel | string | 'zoom out button' |    | Set the aria label to zoom out button
+zoomInButtonAriaLabel  | string | 'zoom in button'  |    | Set the aria label to zoom in button
+closeButtonAriaLabel   | string | 'close button'    |    | Set the aria label to close button
 
 ## Browser Compatibility
 

@@ -679,7 +679,7 @@ class LightboxReact extends Component {
     }
 
     static isTargetMatchImage(target) {
-        return target && /ril-image-current/.test(target.className);
+        return target && (/ril-image-current/.test(target.className) || /ril-image-current/.test(target.className)) ;
     }
 
     shouldHandleEvent(source) {
@@ -772,10 +772,10 @@ class LightboxReact extends Component {
         if (this.shouldHandleEvent(SOURCE_POINTER)) {
             switch (event.type) {
                 case 'pointerdown':
-                    if (LightboxReact.isTargetMatchImage(event.target)) {
-                        this.addPointer(LightboxReact.parsePointerEvent(event));
-                        this.multiPointerStart(event);
-                    }
+                    // commented this to facilitate to drag the tables after zooming
+                    // if (LightboxReact.isTargetMatchImage(event.target)) {//}
+                    this.addPointer(LightboxReact.parsePointerEvent(event));
+                    this.multiPointerStart(event);
                     break;
                 case 'pointermove':
                     this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
@@ -1378,13 +1378,12 @@ class LightboxReact extends Component {
 
             displayItems.push(
                 <div
-                    className={`${imageClass} ${styles.image}`}
+                    className={`${imageClass} ${styles.image} ${styles.imageDiscourager}`}
                     onDoubleClick={this.handleImageDoubleClick}
                     onWheel={this.handleImageMouseWheel}
                     onDragStart={e => e.preventDefault()}
                     style={imageStyle}
                     key={keyEndings[srcType]}
-                    draggable={false}
                 >
                     { DisplayItem }
                 </div>
