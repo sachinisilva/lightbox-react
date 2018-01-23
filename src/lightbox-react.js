@@ -383,17 +383,20 @@ class LightboxReact extends Component {
             if (document.querySelectorAll('.inner').length > 0) {
                 const component = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
                 : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
-                let componentWidth = component.offsetWidth;
-                let componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth;
+                let componentWidth = component.offsetWidth ? component.offsetWidth : component.clientWidth;
+                let componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth ? document.querySelectorAll('.inner')[0].offsetWidth
+                : document.querySelectorAll('.inner')[0].clientWidth;
                 let fontSize = 18;
 
                 while (componentWidth >= componentWrapperWidth && fontSize > 4) {
                     component.style.fontSize = `${fontSize}px`;
-                    componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth;
-                    componentWidth = component.offsetWidth;
+                    componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth ? document.querySelectorAll('.inner')[0].offsetWidth
+                        : document.querySelectorAll('.inner')[0].clientWidth;
+                    componentWidth = component.offsetWidth ? component.offsetWidth : component.clientWidth;
                     fontSize--;
                 }
-                fitSizes = this.getFitSizes(component.offsetWidth, component.offsetHeight, true);
+                fitSizes = this.getFitSizes(component.offsetWidth ? component.offsetWidth : component.clientWidth,
+                    component.offsetHeight ? component.offsetHeight : component.offsetHeight, false);
             }
         } else {
             return null;
@@ -679,7 +682,7 @@ class LightboxReact extends Component {
     }
 
     static isTargetMatchImage(target) {
-        return target || (/ril-image-current/.test(target.className)) ;
+        return target && (/ril-image-current/.test(target.className)) ;
     }
 
     shouldHandleEvent(source) {
@@ -774,11 +777,9 @@ class LightboxReact extends Component {
             switch (event.type) {
                 case 'pointerdown':
                     // commented this to facilitate to drag the tables after zooming
-                    if (LightboxReact.isTargetMatchImage(event.target)) {
-                        this.addPointer(LightboxReact.parsePointerEvent(event));
-                        this.multiPointerStart(event);
-                    }
-
+                    // if (LightboxReact.isTargetMatchImage(event.target)) {//}
+                    this.addPointer(LightboxReact.parsePointerEvent(event));
+                    this.multiPointerStart(event);
                     break;
                 case 'pointermove':
                     this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
@@ -1779,8 +1780,8 @@ LightboxReact.defaultProps = {
     enableZoom:          true,
 
     zoomOutButtonAriaLabel: 'zoom out',
-    zoomInButtonAriaLabel: 'zoom in',
-    closeButtonAriaLabel: 'close'
+    zoomInButtonAriaLabel: 'zoom in button',
+    closeButtonAriaLabel: 'close button'
 };
 
 export default LightboxReact;
