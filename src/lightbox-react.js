@@ -1775,9 +1775,9 @@ LightboxReact.defaultProps = {
     clickOutsideToClose: true,
     enableZoom:          true,
 
-    zoomOutButtonAriaLabel: 'zoom out button',
-    zoomInButtonAriaLabel: 'zoom in button',
-    closeButtonAriaLabel: 'close button'
+    zoomOutButtonAriaLabel: 'zoom out',
+    zoomInButtonAriaLabel: 'zoom in',
+    closeButtonAriaLabel: 'close'
 };
 
 export default LightboxReact;
