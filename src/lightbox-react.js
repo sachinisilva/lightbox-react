@@ -679,7 +679,7 @@ class LightboxReact extends Component {
     }
 
     static isTargetMatchImage(target) {
-        return target;
+        return target ;
     }
 
     shouldHandleEvent(source) {
@@ -750,7 +750,7 @@ class LightboxReact extends Component {
 
     handleMouseDown(event) {
         // remove isTargetMatchImage
-        if (this.shouldHandleEvent(SOURCE_MOUSE)) {
+        if (this.shouldHandleEvent(SOURCE_MOUSE) && LightboxReact.isTargetMatchImage(event.target)) {
             this.addPointer(LightboxReact.parseMouseEvent(event));
             this.multiPointerStart(event);
         }
@@ -774,9 +774,10 @@ class LightboxReact extends Component {
             switch (event.type) {
                 case 'pointerdown':
                     // commented this to facilitate to drag the tables after zooming
-                    // if (LightboxReact.isTargetMatchImage(event.target)) {//}
-                    this.addPointer(LightboxReact.parsePointerEvent(event));
-                    this.multiPointerStart(event);
+                    if (LightboxReact.isTargetMatchImage(event.target)) {
+                        this.addPointer(LightboxReact.parsePointerEvent(event));
+                        this.multiPointerStart(event);
+                    }
                     break;
                 case 'pointermove':
                     this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
