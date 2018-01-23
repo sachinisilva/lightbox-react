@@ -800,7 +800,7 @@ class LightboxReact extends Component {
     }
 
     handleTouchMove(event) {
-        if (this.shouldHandleEvent(SOURCE_TOUCH)) {
+        if (this.shouldHandleEvent(SOURCE_TOUCH) && LightboxReact.isTargetMatchImage(event.target)) {
             this.multiPointerMove(event, [].map.call(event.changedTouches,
                 eventTouch => LightboxReact.parseTouchPointer(eventTouch)));
         }
