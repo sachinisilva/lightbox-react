@@ -679,7 +679,7 @@ class LightboxReact extends Component {
     }
 
     static isTargetMatchImage(target) {
-        return target ;
+        return target || (/ril-image-current/.test(target.className)) ;
     }
 
     shouldHandleEvent(source) {
@@ -750,7 +750,7 @@ class LightboxReact extends Component {
 
     handleMouseDown(event) {
         // remove isTargetMatchImage
-        if (this.shouldHandleEvent(SOURCE_MOUSE) && LightboxReact.isTargetMatchImage(event.target)) {
+        if (this.shouldHandleEvent(SOURCE_MOUSE)) {
             this.addPointer(LightboxReact.parseMouseEvent(event));
             this.multiPointerStart(event);
         }
@@ -778,6 +778,7 @@ class LightboxReact extends Component {
                         this.addPointer(LightboxReact.parsePointerEvent(event));
                         this.multiPointerStart(event);
                     }
+
                     break;
                 case 'pointermove':
                     this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
