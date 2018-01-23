@@ -526,7 +526,7 @@ class LightboxReact extends Component {
      */
     handleKeyInput(event) {
         // this will prevent key up event in order to avoid that commented this
-        // event.stopPropagation();
+        event.stopPropagation();
 
         // Ignore key input during animations
         if (this.isAnimating()) {
