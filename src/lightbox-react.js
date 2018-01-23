@@ -526,7 +526,7 @@ class LightboxReact extends Component {
      */
     handleKeyInput(event) {
         // this will prevent key up event in order to avoid that commented this
-        event.stopPropagation();
+        //event.stopPropagation();
 
         // Ignore key input during animations
         if (this.isAnimating()) {
@@ -793,8 +793,7 @@ class LightboxReact extends Component {
     }
 
     handleTouchStart(event) {
-        // removed isTargetMatchImage
-        if (this.shouldHandleEvent(SOURCE_TOUCH)) {
+        if (this.shouldHandleEvent(SOURCE_TOUCH) && LightboxReact.isTargetMatchImage(event.target)) {
             [].forEach.call(event.changedTouches,
                 eventTouch => this.addPointer(LightboxReact.parseTouchPointer(eventTouch)));
             this.multiPointerStart(event);
