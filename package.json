@@ -1,6 +1,6 @@
 {
   "name": "react-accessible-lightbox",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Lghtbox for React components or images",
   "scripts": {
     "build": "npm run lint && npm run build:demo && npm run build:umd",

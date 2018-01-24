@@ -679,7 +679,7 @@ class LightboxReact extends Component {
     }
 
     static isTargetMatchImage(target) {
-        return target ;
+        return target && (/ril-image-current/.test(target.className));
     }
 
     shouldHandleEvent(source) {
@@ -750,7 +750,7 @@ class LightboxReact extends Component {
 
     handleMouseDown(event) {
         // remove isTargetMatchImage
-        if (this.shouldHandleEvent(SOURCE_MOUSE) && LightboxReact.isTargetMatchImage(event.target)) {
+        if (this.shouldHandleEvent(SOURCE_MOUSE)) {
             this.addPointer(LightboxReact.parseMouseEvent(event));
             this.multiPointerStart(event);
         }
@@ -774,11 +774,8 @@ class LightboxReact extends Component {
             switch (event.type) {
                 case 'pointerdown':
                     // commented this to facilitate to drag the tables after zooming
-                    if (LightboxReact.isTargetMatchImage(event.target)) {
-                        this.addPointer(LightboxReact.parsePointerEvent(event));
-                        this.multiPointerStart(event);
-                    }
-
+                    this.addPointer(LightboxReact.parsePointerEvent(event));
+                    this.multiPointerStart(event);
                     break;
                 case 'pointermove':
                     this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
@@ -795,7 +792,8 @@ class LightboxReact extends Component {
     }
 
     handleTouchStart(event) {
-        if (this.shouldHandleEvent(SOURCE_TOUCH) && LightboxReact.isTargetMatchImage(event.target)) {
+        event.stopPropagation()
+        if (this.shouldHandleEvent(SOURCE_TOUCH)) {
             [].forEach.call(event.changedTouches,
                 eventTouch => this.addPointer(LightboxReact.parseTouchPointer(eventTouch)));
             this.multiPointerStart(event);
@@ -1461,8 +1459,7 @@ class LightboxReact extends Component {
 
         const modalStyle = {
             overlay: {
-                zIndex:          10000,
-                backgroundColor: 'transparent',
+                backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 ...reactModalStyle.overlay, // Allow style overrides via props
             },
             content: {
@@ -1779,8 +1776,8 @@ LightboxReact.defaultProps = {
     enableZoom:          true,
 
     zoomOutButtonAriaLabel: 'zoom out',
-    zoomInButtonAriaLabel: 'zoom in button',
-    closeButtonAriaLabel: 'close button'
+    zoomInButtonAriaLabel: 'zoom in',
+    closeButtonAriaLabel: 'close'
 };
 
 export default LightboxReact;
