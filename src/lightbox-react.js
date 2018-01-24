@@ -792,7 +792,6 @@ class LightboxReact extends Component {
     }
 
     handleTouchStart(event) {
-        event.stopPropagation()
         if (this.shouldHandleEvent(SOURCE_TOUCH) && LightboxReact.isTargetMatchImage(event.target)) {
             [].forEach.call(event.changedTouches,
                 eventTouch => this.addPointer(LightboxReact.parseTouchPointer(eventTouch)));
@@ -1382,7 +1381,6 @@ class LightboxReact extends Component {
                     className={`${imageClass} ${styles.image} ${styles.imageDiscourager}`}
                     onDoubleClick={this.handleImageDoubleClick}
                     onWheel={this.handleImageMouseWheel}
-                    onDragStart={e => e.preventDefault()}
                     style={imageStyle}
                     key={keyEndings[srcType]}
                 >
