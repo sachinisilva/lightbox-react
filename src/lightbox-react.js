@@ -807,7 +807,7 @@ class LightboxReact extends Component {
     }
 
     handleTouchEnd(event) {
-        if (this.shouldHandleEvent(SOURCE_TOUCH)) {
+        if (this.shouldHandleEvent(SOURCE_TOUCH) && LightboxReact.isTargetMatchImage(event.target)) {
             [].map.call(event.changedTouches,
                 touch => this.removePointer(LightboxReact.parseTouchPointer(touch)));
             this.multiPointerEnd(event);
@@ -1509,6 +1509,7 @@ class LightboxReact extends Component {
                     onKeyDown={this.handleKeyInput}
                     onKeyUp={this.handleKeyInput}
                     role='dialog'
+                    aria-describedby='open light box'
                 >
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
