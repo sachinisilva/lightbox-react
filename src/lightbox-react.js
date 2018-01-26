@@ -750,7 +750,7 @@ class LightboxReact extends Component {
 
     handleMouseDown(event) {
         // remove isTargetMatchImage
-        if (this.shouldHandleEvent(SOURCE_MOUSE)) {
+        if (this.shouldHandleEvent(SOURCE_MOUSE) && LightboxReact.isTargetMatchImage(event.target)) {
             this.addPointer(LightboxReact.parseMouseEvent(event));
             this.multiPointerStart(event);
         }
@@ -807,7 +807,7 @@ class LightboxReact extends Component {
     }
 
     handleTouchEnd(event) {
-        if (this.shouldHandleEvent(SOURCE_TOUCH) && LightboxReact.isTargetMatchImage(event.target)) {
+        if (this.shouldHandleEvent(SOURCE_TOUCH)) {
             [].map.call(event.changedTouches,
                 touch => this.removePointer(LightboxReact.parseTouchPointer(touch)));
             this.multiPointerEnd(event);
@@ -1508,14 +1508,15 @@ class LightboxReact extends Component {
                     onTouchMove={this.handleTouchMove}
                     onKeyDown={this.handleKeyInput}
                     onKeyUp={this.handleKeyInput}
-                    role='dialog'
-                    aria-describedby='open light box'
+                    aria-labelledby='light box'
+                    aria-describedby='modal-content-lightbox'
                 >
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                         // Image holder
                         className={`inner ril-inner ${styles.inner}`}
                         onClick={clickOutsideToClose ? this.closeIfClickInner : noop}
+                        id="modal-content-lightbox"
                     >
                         {displayItems}
                     </div>
