@@ -800,6 +800,7 @@ class LightboxReact extends Component {
     }
 
     handleTouchMove(event) {
+        event.preventDefault()
         if (this.shouldHandleEvent(SOURCE_TOUCH)) {
             this.multiPointerMove(event, [].map.call(event.changedTouches,
                 eventTouch => LightboxReact.parseTouchPointer(eventTouch)));
@@ -1504,6 +1505,7 @@ class LightboxReact extends Component {
                     onWheel={this.handleOuterMousewheel}
                     onMouseMove={this.handleMouseMove}
                     onMouseDown={this.handleMouseDown}
+                    onTouchEnd={this.handleTouchEnd}
                     onTouchStart={this.handleTouchStart}
                     onTouchMove={this.handleTouchMove}
                     onKeyDown={this.handleKeyInput}
