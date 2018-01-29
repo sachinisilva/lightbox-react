@@ -750,14 +750,14 @@ class LightboxReact extends Component {
 
     handleMouseDown(event) {
         // remove isTargetMatchImage
-        if (this.shouldHandleEvent(SOURCE_MOUSE) && LightboxReact.isTargetMatchImage(event.target)) {
+        if (this.shouldHandleEvent(SOURCE_MOUSE)) {
             this.addPointer(LightboxReact.parseMouseEvent(event));
             this.multiPointerStart(event);
         }
     }
 
     handleMouseMove(event) {
-        if (this.shouldHandleEvent(SOURCE_MOUSE)) {
+        if (this.shouldHandleEvent(SOURCE_MOUSE) && LightboxReact.isTargetMatchImage(event.target)) {
             this.multiPointerMove(event, [LightboxReact.parseMouseEvent(event)]);
         }
     }
