@@ -1510,15 +1510,15 @@ class LightboxReact extends Component {
                     onTouchMove={this.handleTouchMove}
                     onKeyDown={this.handleKeyInput}
                     onKeyUp={this.handleKeyInput}
-                    aria-labelledby='light box'
-                    aria-describedby='modal-content-lightbox'
+                    aria-labelledby='modal-title'
+                    role='dialog'
+                    aria-describedby='modal-content'
                 >
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                         // Image holder
                         className={`inner ril-inner ${styles.inner}`}
                         onClick={clickOutsideToClose ? this.closeIfClickInner : noop}
-                        id="modal-content-lightbox"
                     >
                         {displayItems}
                     </div>
