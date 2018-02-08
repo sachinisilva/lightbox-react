@@ -1510,9 +1510,7 @@ class LightboxReact extends Component {
                     onTouchMove={this.handleTouchMove}
                     onKeyDown={this.handleKeyInput}
                     onKeyUp={this.handleKeyInput}
-                    aria-labelledby='modal-title'
                     role='dialog'
-                    aria-describedby='modal-content'
                 >
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
