@@ -1379,7 +1379,7 @@ class LightboxReact extends Component {
 
             displayItems.push(
                 <div
-                    className={`${imageClass} ${styles.image} ${styles.imageDiscourager}`}
+                    className={`${imageClass} ${styles.image}`}
                     onDoubleClick={this.handleImageDoubleClick}
                     onWheel={this.handleImageMouseWheel}
                     style={imageStyle}
