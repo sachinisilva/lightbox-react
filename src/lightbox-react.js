@@ -679,7 +679,7 @@ class LightboxReact extends Component {
     }
 
     static isTargetMatchImage(target) {
-        return target && (/ril-image-current/.test(target.className));
+        return target && ((/ril-image-current/.test(target.className)) || target.offsetParent.nodeName === 'TABLE');
     }
 
     shouldHandleEvent(source) {
