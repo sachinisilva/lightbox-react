@@ -1,6 +1,6 @@
 {
   "name": "react-accessible-lightbox",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Lghtbox for React components or images",
   "scripts": {
     "build": "npm run lint && npm run build:demo && npm run build:umd",
@@ -32,7 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "is-react": "^1.0.0",
-    "react-modal": "^1.4.0"
+    "react-modal": "^3.4.4"
   },
   "peerDependencies": {
     "prop-types": "^15.5.8",
