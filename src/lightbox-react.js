@@ -1490,7 +1490,7 @@ class LightboxReact extends Component {
                 onAfterOpen={() => this.outerEl && this.outerEl.focus()} // Focus on the div with key handlers
                 style={modalStyle}
                 role='dialog'
-                contentLabel='Lightbox'
+                contentLabel='You are currently in a Lightbox'
             >
                 <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                     // Floating modal with closing animations
@@ -1511,7 +1511,6 @@ class LightboxReact extends Component {
                     onTouchMove={this.handleTouchMove}
                     onKeyDown={this.handleKeyInput}
                     onKeyUp={this.handleKeyInput}
-                    role='dialog'
                 >
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
