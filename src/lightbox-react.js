@@ -98,6 +98,7 @@ class LightboxReact extends Component {
         this.requestClose             = this.requestClose.bind(this);
         this.requestMoveNext          = this.requestMoveNext.bind(this);
         this.requestMovePrev          = this.requestMovePrev.bind(this);
+        this.handleKeyUpEventEvent    = this.handleKeyUpEventEvent.bind(this)
     }
 
     componentWillMount() {
@@ -239,6 +240,7 @@ class LightboxReact extends Component {
             window.addEventListener('pointermove', this.handlePointerEvent);
             window.addEventListener('pointerup', this.handlePointerEvent);
             window.addEventListener('pointercancel', this.handlePointerEvent);
+            window.top.addEventListener('keydown', this.handleKeyUpEventEvent);
             // Have to add an extra mouseup handler to catch mouseup events outside of the window
             //  if the page containing the lightbox is displayed in an iframe
             if (isInSameOriginIframe()) {
@@ -249,6 +251,7 @@ class LightboxReact extends Component {
                 window.top.addEventListener('pointermove', this.handlePointerEvent);
                 window.top.addEventListener('pointerup', this.handlePointerEvent);
                 window.top.addEventListener('pointercancel', this.handlePointerEvent);
+                window.top.addEventListener('keydown', this.handleKeyUpEventEvent);
             }
 
             this.listenersAttached = true;
@@ -346,6 +349,7 @@ class LightboxReact extends Component {
     detachListeners() {
         if (this.listenersAttached) {
             window.removeEventListener('resize', this.handleWindowResize);
+            window.removeEventListener('keydown', this.handleKeyUpEventEvent);
             window.removeEventListener('mouseup', this.handleMouseUp);
             window.removeEventListener('touchend', this.handleTouchEnd);
             window.removeEventListener('touchcancel', this.handleTouchEnd);
@@ -361,6 +365,7 @@ class LightboxReact extends Component {
                 window.top.removeEventListener('pointermove', this.handlePointerEvent);
                 window.top.removeEventListener('pointerup', this.handlePointerEvent);
                 window.top.removeEventListener('pointercancel', this.handlePointerEvent);
+                window.top.removeEventListener('keydown', this.handleKeyUpEventEvent);
             }
 
             this.listenersAttached = false;
@@ -560,7 +565,7 @@ class LightboxReact extends Component {
 
             // Left arrow key moves to previous image
             case KEYS.LEFT_ARROW:
-                if (!this.props.prevSrc) {
+                if (!this.props.prevSrc || this.state.zoomLevel !== MIN_ZOOM_LEVEL) {
                     return;
                 }
 
@@ -571,7 +576,7 @@ class LightboxReact extends Component {
 
             // Right arrow key moves to next image
             case KEYS.RIGHT_ARROW:
-                if (!this.props.nextSrc) {
+                if (!this.props.nextSrc || this.state.zoomLevel !== MIN_ZOOM_LEVEL) {
                     return;
                 }
 
@@ -1057,6 +1062,34 @@ class LightboxReact extends Component {
         this.resizeTimeout = this.setTimeout(this.forceUpdate.bind(this), 100);
     }
 
+    handleKeyUpEventEvent (event) {
+        var element, val
+        switch (event.which) {
+            case KEYS.UP_ARROW:
+                element = document.getElementById('item-holder')
+                val = (element.style.top === '' ? 0 : parseInt(element.style.top))  - 5 + 'px'
+                element.style.top = val
+                break;
+            case KEYS.DOWN_ARROW:
+                element = document.getElementById('item-holder')
+                val = (element.style.top === '' ? 0 : parseInt(element.style.top)) + 5 + 'px'
+                element.style.top = val
+                break;
+            case KEYS.RIGHT_ARROW:
+                element = document.getElementById('item-holder')
+                val = (element.style.left === '' ? 0 : parseInt(element.style.left)) + 5 + 'px'
+                element.style.left = val
+                break;
+            case KEYS.LEFT_ARROW:
+                element = document.getElementById('item-holder')
+                val = (element.style.left === '' ? 0 : parseInt(element.style.left)) - 5 + 'px'
+                element.style.left = val
+                break;
+            default:
+                break;
+        }
+    }
+
     handleZoomInButtonClick() {
         this.changeZoom(this.state.zoomLevel + ZOOM_BUTTON_INCREMENT_SIZE);
     }
@@ -1515,6 +1548,7 @@ class LightboxReact extends Component {
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                         // Image holder
+                        id='item-holder'
                         className={`inner ril-inner ${styles.inner}`}
                         onClick={clickOutsideToClose ? this.closeIfClickInner : noop}
                     >
