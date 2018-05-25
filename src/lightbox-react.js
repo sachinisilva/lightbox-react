@@ -99,7 +99,6 @@ class LightboxReact extends Component {
         this.requestMoveNext          = this.requestMoveNext.bind(this);
         this.requestMovePrev          = this.requestMovePrev.bind(this);
         this.handleKeyUpEventEvent    = this.handleKeyUpEventEvent.bind(this)
-        this.tableScale               = this.tableScale.bind(this)
     }
 
     componentWillMount() {
@@ -1051,85 +1050,6 @@ class LightboxReact extends Component {
         );
     }
 
-    tableScale (theCanvases) {
-        const maxWidth = 900
-        var arrayLength = theCanvases.length
-
-        // First, pop open all the the .scaling-canvases.
-        // We do this before taking measurements so that any other tables in
-        // the same parent container don't influence measurements
-       // for (var j = 0; j < arrayLength; j++) {
-            var aCanvasO = theCanvases
-            var theTableO = aCanvasO.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
-            var spacerO = aCanvasO.nextElementSibling
-
-            // Remove any leftover scaling and spacer sizes - important for viewport resizing
-            theTableO.style.transform = ''
-            theTableO.style.position = 'relative'
-            spacerO.style.height = ''
-
-            // Pop open each .scaling-canvas to see how big the table becomes
-            // IMPORTANT: '.scaling-canvas table:first-child' MUST have 'position: absolute' defined in CSS
-            // in order for wide tables to not influence measurements on intial page load
-            aCanvasO.style.position = 'absolute'
-            aCanvasO.style.width = maxWidth + 'px'
-       // }
-
-        // Next, we take measurements and scale the tables if needed
-        //for (var i = 0; i < arrayLength; i++) {
-            var aCanvas = theCanvases
-            var theTable = aCanvas.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
-            var spacer = aCanvas.nextElementSibling
-           // var zoomButton = aCanvas.getElementsByClassName('stu-zoom-table')[0]
-
-            // Measure the available width by using the .scaling-canvas-spacer sibling.
-            // By default .scaling-canvas-spacer is 100% wide, so it's easier to measure
-            // than looking at the parent and subtracting padding.
-            var availableWidth = Math.floor(spacer.clientWidth)
-
-            // Measure actual size of table
-            var actualTableWidth = theTable.offsetWidth
-            var actualTableHeight = theTable.offsetHeight
-
-            // Add margins to measurements
-            var computedStyle = getComputedStyle(theTable) // Measure all table values in pixels
-            actualTableWidth += Math.ceil(parseInt(computedStyle.marginLeft) + parseInt(computedStyle.marginRight))
-            actualTableHeight += Math.ceil(parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom))
-
-            // Calculate the scaling factor
-            var scale = availableWidth / actualTableWidth
-
-            // If the scale is < 1, then scale the table, otherwise put .scaling-canvas back to defaults
-            if (scale < 1) {
-                // Scale the table
-                // We hard-set the table width and height here so that it's not recalculated later
-                theTable.style.width = actualTableWidth + 'px'
-                theTable.style.transformOrigin = 'top left'
-                theTable.style.transform = 'scale(' + scale + ')'
-
-                // Size the spacing container to provide proper vertical spacing.
-                // Its width defaults to 'auto' so no need to adjust that.
-                spacer.style.height = (actualTableHeight * scale) + 'px'
-
-                // Reposition the zoom button
-             //   zoomButton.classList.remove('hide') // In case it was previously hidden
-               // zoomButton.style.left = availableWidth - zoomButton.offsetWidth + 'px'
-                //zoomButton.style.top = (actualTableHeight * scale) - zoomButton.offsetHeight + 'px'
-
-                // Size the canvas - in case overflow: hidden is not on parent
-                aCanvas.style.height = (actualTableHeight * scale) + 'px'
-                aCanvas.style.width = availableWidth + 'px'
-            } else {
-                // Set the scaling canvas back to defaults
-                aCanvas.style.position = 'relative'
-                aCanvas.style.width = ''
-
-                // Hide the zoom button
-          //      zoomButton.classList.add('hide')
-            }
-        //}
-    }
-
     handlePinchEnd() {
         this.currentAction = ACTION_NONE;
         this.pinchTouchList = null;
@@ -1140,7 +1060,6 @@ class LightboxReact extends Component {
     handleWindowResize() {
         this.clearTimeout(this.resizeTimeout);
         this.resizeTimeout = this.setTimeout(this.forceUpdate.bind(this), 100);
-        this.tableScale(document.getElementById('item-holder'))
     }
 
     handleKeyUpEventEvent (event) {
