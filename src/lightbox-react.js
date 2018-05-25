@@ -1058,8 +1058,8 @@ class LightboxReact extends Component {
         // First, pop open all the the .scaling-canvases.
         // We do this before taking measurements so that any other tables in
         // the same parent container don't influence measurements
-        for (var j = 0; j < arrayLength; j++) {
-            var aCanvasO = theCanvases[j]
+       // for (var j = 0; j < arrayLength; j++) {
+            var aCanvasO = theCanvases
             var theTableO = aCanvasO.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
             var spacerO = aCanvasO.nextElementSibling
 
@@ -1073,14 +1073,14 @@ class LightboxReact extends Component {
             // in order for wide tables to not influence measurements on intial page load
             aCanvasO.style.position = 'absolute'
             aCanvasO.style.width = maxWidth + 'px'
-        }
+       // }
 
         // Next, we take measurements and scale the tables if needed
-        for (var i = 0; i < arrayLength; i++) {
-            var aCanvas = theCanvases[i]
+        //for (var i = 0; i < arrayLength; i++) {
+            var aCanvas = theCanvases
             var theTable = aCanvas.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
             var spacer = aCanvas.nextElementSibling
-            var zoomButton = aCanvas.getElementsByClassName('stu-zoom-table')[0]
+           // var zoomButton = aCanvas.getElementsByClassName('stu-zoom-table')[0]
 
             // Measure the available width by using the .scaling-canvas-spacer sibling.
             // By default .scaling-canvas-spacer is 100% wide, so it's easier to measure
@@ -1112,9 +1112,9 @@ class LightboxReact extends Component {
                 spacer.style.height = (actualTableHeight * scale) + 'px'
 
                 // Reposition the zoom button
-                zoomButton.classList.remove('hide') // In case it was previously hidden
-                zoomButton.style.left = availableWidth - zoomButton.offsetWidth + 'px'
-                zoomButton.style.top = (actualTableHeight * scale) - zoomButton.offsetHeight + 'px'
+             //   zoomButton.classList.remove('hide') // In case it was previously hidden
+               // zoomButton.style.left = availableWidth - zoomButton.offsetWidth + 'px'
+                //zoomButton.style.top = (actualTableHeight * scale) - zoomButton.offsetHeight + 'px'
 
                 // Size the canvas - in case overflow: hidden is not on parent
                 aCanvas.style.height = (actualTableHeight * scale) + 'px'
@@ -1125,9 +1125,9 @@ class LightboxReact extends Component {
                 aCanvas.style.width = ''
 
                 // Hide the zoom button
-                zoomButton.classList.add('hide')
+          //      zoomButton.classList.add('hide')
             }
-        }
+        //}
     }
 
     handlePinchEnd() {
