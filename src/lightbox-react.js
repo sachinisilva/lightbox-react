@@ -1404,6 +1404,9 @@ class LightboxReact extends Component {
         const addComponent = (srcType, imageClass, baseStyle = {}) => {
             const imageStyle = { ...baseStyle, ...transitionStyle };
             let DisplayItem = this.props[srcType];
+            const bestImageInfo = this.getBestImageForType(srcType);
+            imageStyle.width  = bestImageInfo.width;
+            imageStyle.height = bestImageInfo.height;
             if (zoomLevel > MIN_ZOOM_LEVEL) {
                 imageStyle.cursor = 'move';
             }
