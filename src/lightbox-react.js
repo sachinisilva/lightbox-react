@@ -386,19 +386,92 @@ class LightboxReact extends Component {
             fitSizes = this.getFitSizes(this.imageCache[imageSrc].width, this.imageCache[imageSrc].height, true);
         } else if (isReact.component(this.props[srcType]) || isReact.element(this.props[srcType])) {
             if (document.querySelectorAll('.inner').length > 0) {
-                const component = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
-                : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
-                let componentWidth = component.offsetWidth;
-                let componentWrapperWidth = document.querySelectorAll('.inner')[0].childNodes[0].offsetWidth;
-                let fontSize = 18;
+                const theCanvases = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
+                : document.querySelectorAll('.inner table')[0].childNodes[0].childNodes[0];
+                const maxWidth = 900
+                var arrayLength = theCanvases.length
 
-                while (componentWidth >= componentWrapperWidth && fontSize > 4) {
-                    component.style.fontSize = `${fontSize}px`;
-                    componentWidth = component.offsetWidth;
-                    componentWrapperWidth = document.querySelectorAll('.inner')[0].childNodes[0].offsetWidth;
-                    fontSize--;
+                // First, pop open all the the .scaling-canvases.
+                // We do this before taking measurements so that any other tables in
+                // the same parent container don't influence measurements
+                for (var j = 0; j < arrayLength; j++) {
+                    var aCanvasO = theCanvases[j]
+                    var theTableO = aCanvasO.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
+                    var spacerO = aCanvasO.nextElementSibling
+
+                    // Remove any leftover scaling and spacer sizes - important for viewport resizing
+                    theTableO.style.transform = ''
+                    theTableO.style.position = 'relative'
+                    spacerO.style.height = ''
+
+                    // Pop open each .scaling-canvas to see how big the table becomes
+                    // IMPORTANT: '.scaling-canvas table:first-child' MUST have 'position: absolute' defined in CSS
+                    // in order for wide tables to not influence measurements on intial page load
+                    aCanvasO.style.position = 'absolute'
+                    aCanvasO.style.width = maxWidth + 'px'
                 }
-                fitSizes = this.getFitSizes(component.offsetWidth, component.offsetHeight);
+
+                // Next, we take measurements and scale the tables if needed
+                for (var i = 0; i < arrayLength; i++) {
+                    var aCanvas = theCanvases[i]
+                    var theTable = aCanvas.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
+                    var spacer = aCanvas.nextElementSibling
+                    var zoomButton = aCanvas.getElementsByClassName('stu-zoom-table')[0]
+
+                    // Measure the available width by using the .scaling-canvas-spacer sibling.
+                    // By default .scaling-canvas-spacer is 100% wide, so it's easier to measure
+                    // than looking at the parent and subtracting padding.
+                    var availableWidth = Math.floor(spacer.clientWidth)
+
+                    // Measure actual size of table
+                    var actualTableWidth = theTable.offsetWidth
+                    var actualTableHeight = theTable.offsetHeight
+
+                    // Add margins to measurements
+                    var computedStyle = getComputedStyle(theTable) // Measure all table values in pixels
+                    actualTableWidth += Math.ceil(parseInt(computedStyle.marginLeft) + parseInt(computedStyle.marginRight))
+                    actualTableHeight += Math.ceil(parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom))
+
+                    // Calculate the scaling factor
+                    var scale = availableWidth / actualTableWidth
+
+                    // If the scale is < 1, then scale the table, otherwise put .scaling-canvas back to defaults
+                    if (scale < 1) {
+                        // Scale the table
+                        // We hard-set the table width and height here so that it's not recalculated later
+                        theTable.style.width = actualTableWidth + 'px'
+                        theTable.style.transformOrigin = 'top left'
+                        theTable.style.transform = 'scale(' + scale + ')'
+
+                        // Size the spacing container to provide proper vertical spacing.
+                        // Its width defaults to 'auto' so no need to adjust that.
+                        spacer.style.height = (actualTableHeight * scale) + 'px'
+
+                        // Reposition the zoom button
+                        zoomButton.style.left = availableWidth - zoomButton.offsetWidth + 'px'
+
+                        // Size the canvas - in case overflow: hidden is not on parent
+                        aCanvas.style.height = (actualTableHeight * scale) + 'px'
+                        aCanvas.style.width = availableWidth + 'px'
+                    } else {
+                        // Set the scaling canvas back to defaults
+                        aCanvas.style.position = 'relative'
+                        aCanvas.style.width = ''
+
+                        // Hide the zoom button
+                    }
+                }
+                // let componentWidth = component.offsetWidth;
+                // let componentWrapperWidth = document.querySelectorAll('.inner')[0].childNodes[0].offsetWidth;
+                // let fontSize = 18;
+                //
+                // while (componentWidth >= componentWrapperWidth && fontSize > 4) {
+                //     component.style.fontSize = `${fontSize}px`;
+                //     componentWidth = component.offsetWidth;
+                //     componentWrapperWidth = document.querySelectorAll('.inner')[0].childNodes[0].offsetWidth;
+                //     fontSize--;
+                // }
+                fitSizes = this.getFitSizes(theCanvases.style.width, theCanvases.style.height);
             }
         } else {
             return null;
