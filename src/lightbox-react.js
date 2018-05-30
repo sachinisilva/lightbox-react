@@ -397,12 +397,12 @@ class LightboxReact extends Component {
                 //  for (var j = 0; j < arrayLength; j++) {
                 var aCanvasO = theCanvases
                 var theTableO = aCanvasO.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
-                var spacerO = aCanvasO.nextElementSibling
+                //var spacerO = aCanvasO.nextElementSibling
 
                 // Remove any leftover scaling and spacer sizes - important for viewport resizing
                 theTableO.style.transform = ''
                 theTableO.style.position = 'relative'
-                spacerO.style.height = ''
+              //  spacerO.style.height = ''
 
                 // Pop open each .scaling-canvas to see how big the table becomes
                 // IMPORTANT: '.scaling-canvas table:first-child' MUST have 'position: absolute' defined in CSS
