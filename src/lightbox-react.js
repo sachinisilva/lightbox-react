@@ -387,7 +387,7 @@ class LightboxReact extends Component {
         } else if (isReact.component(this.props[srcType]) || isReact.element(this.props[srcType])) {
             if (document.querySelectorAll('.inner').length > 0) {
                 const theCanvases = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
-                : document.querySelectorAll('.inner table')[0].childNodes[0].childNodes[0];
+                : document.querySelectorAll('.inner table');
                 const maxWidth = 900
                 var arrayLength = theCanvases.length
 
