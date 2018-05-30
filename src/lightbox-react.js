@@ -388,6 +388,16 @@ class LightboxReact extends Component {
             if (document.querySelectorAll('.inner').length > 0) {
                 const component = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
                 : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
+                let componentWidth = component.offsetWidth;
+                let componentWrapperWidth = document.querySelectorAll('.inner')[0].childNodes[0].offsetWidth;
+                let fontSize = 18;
+
+                while (componentWidth >= componentWrapperWidth && fontSize > 4) {
+                    component.style.fontSize = `${fontSize}px`;
+                    componentWrapperWidth = document.querySelectorAll('.inner')[0].childNodes[0].offsetWidth;
+                    componentWidth = component.offsetWidth;
+                    fontSize--;
+                }
                 fitSizes = this.getFitSizes(component.offsetWidth, component.offsetHeight, true);
             }
         } else {
