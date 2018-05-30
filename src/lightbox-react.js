@@ -1411,7 +1411,7 @@ class LightboxReact extends Component {
                 imageStyle.cursor = 'move';
             }
             DisplayItem = isReact.component(DisplayItem) ?
-                <DisplayItem /> : DisplayItem;
+                <DisplayItem style={imageStyle} /> : DisplayItem;
 
             displayItems.push(
                 <div
