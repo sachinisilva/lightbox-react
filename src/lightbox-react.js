@@ -415,7 +415,7 @@ class LightboxReact extends Component {
                 // for (var i = 0; i < arrayLength; i++) {
                 var aCanvas = theCanvases
                 var theTable = aCanvas.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
-                var spacer = aCanvas.nextElementSibling
+                var spacer = document.querySelectorAll('.inner')[0].childNodes[0]
                 // Measure the available width by using the .scaling-canvas-spacer sibling.
                 // By default .scaling-canvas-spacer is 100% wide, so it's easier to measure
                 // than looking at the parent and subtracting padding.
