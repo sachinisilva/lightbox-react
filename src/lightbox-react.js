@@ -469,7 +469,11 @@ class LightboxReact extends Component {
                 // }
                 fitSizes = this.getFitSizes(theCanvases.style.width, theCanvases.style.height);
             } else {
-                fitSizes = this.getFitSizes(document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0].offsetWidth, document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0].offsetHeight);
+                if (document.querySelectorAll('.inner')) {
+                    const theCanvases = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
+                        : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
+                    fitSizes = this.getFitSizes(theCanvases.offsetWidth, theCanvases.offsetHeight);
+                }
             }
         } else {
             return null;
