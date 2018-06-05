@@ -385,7 +385,7 @@ class LightboxReact extends Component {
             imageSrc = this.props[`${srcType}Thumbnail`];
             fitSizes = this.getFitSizes(this.imageCache[imageSrc].width, this.imageCache[imageSrc].height, true);
         } else if (isReact.component(this.props[srcType]) || isReact.element(this.props[srcType])) {
-            if (document.querySelectorAll('.inner').length > 0) {
+            if (document.querySelectorAll('.inner').length > 0 && this.state.zoomLevel > MIN_ZOOM_LEVEL) {
                 const theCanvases = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
                     : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
                 const maxWidth = 900
