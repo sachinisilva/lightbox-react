@@ -469,7 +469,7 @@ class LightboxReact extends Component {
                 // }
                 fitSizes = this.getFitSizes(theCanvases.style.width, theCanvases.style.height);
             } else {
-                if (document.querySelectorAll('.inner')) {
+                if (document.querySelectorAll('.inner').length > 0) {
                     const theCanvases = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
                         : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
                     fitSizes = this.getFitSizes(theCanvases.offsetWidth, theCanvases.offsetHeight);
