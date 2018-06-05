@@ -468,6 +468,8 @@ class LightboxReact extends Component {
                 //     fontSize--;
                 // }
                 fitSizes = this.getFitSizes(theCanvases.style.width, theCanvases.style.height);
+            } else {
+                fitSizes = this.getFitSizes(document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0].offsetWidth, document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0].offsetHeight);
             }
         } else {
             return null;
