@@ -1341,7 +1341,7 @@ class LightboxReact extends Component {
             // the same parent container don't influence measurements
             //  for (var j = 0; j < arrayLength; j++) {
             var aCanvasO = theCanvases
-            var theTableO = aCanvasO // Get the 1st table (should be the only table)
+            var theTableO = aCanvasO.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
             //var spacerO = aCanvasO.nextElementSibling
 
             // Remove any leftover scaling and spacer sizes - important for viewport resizing
@@ -1359,7 +1359,7 @@ class LightboxReact extends Component {
             // Next, we take measurements and scale the tables if needed
             // for (var i = 0; i < arrayLength; i++) {
             var aCanvas = theCanvases
-            var theTable = aCanvas // Get the 1st table (should be the only table)
+            var theTable = aCanvas.getElementsByTagName('table')[0] // Get the 1st table (should be the only table)
             var spacer = document.querySelectorAll('.inner')[0].childNodes[0]
             // Measure the available width by using the .scaling-canvas-spacer sibling.
             // By default .scaling-canvas-spacer is 100% wide, so it's easier to measure
