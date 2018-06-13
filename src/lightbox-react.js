@@ -1065,7 +1065,7 @@ class LightboxReact extends Component {
     handleKeyUpEventEvent (event) {
         var element, val, rect
         var parentElement = document.getElementsByClassName('image-current')[0]
-        element = parentElement.children.length > 0 ? parentElement[0] : parentElement
+        element = parentElement.children.length > 0 ? parentElement.childNodes[0].childNodes[0] : parentElement
         rect = element.getBoundingClientRect()
         if (this.state.zoomLevel > MIN_ZOOM_LEVEL) {
             switch (event.which) {
