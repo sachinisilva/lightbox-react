@@ -1543,6 +1543,7 @@ class LightboxReact extends Component {
                 onRequestClose={clickOutsideToClose ? this.requestClose : noop}
                 onAfterOpen={() => this.outerEl && this.outerEl.focus()} // Focus on the div with key handlers
                 style={modalStyle}
+                ariaHideApp={false}
                 role='dialog'
                 contentLabel='You are currently in a Lightbox'
             >
@@ -1569,6 +1570,7 @@ class LightboxReact extends Component {
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                         // Image holder
+                        tabIndex={0}
                         id='item-holder'
                         className={`inner ril-inner ${styles.inner}`}
                         onClick={clickOutsideToClose ? this.closeIfClickInner : noop}
@@ -1831,7 +1833,7 @@ LightboxReact.defaultProps = {
     enableZoom:          true,
 
     zoomOutButtonAriaLabel: 'zoom out',
-    zoomInButtonAriaLabel: 'zoom in',
+    zoomInButtonAriaLabel: 'zoom in, After zoom in, use arrow keys to move the image from left to right and top to bottom',
     closeButtonAriaLabel: 'close'
 };
 
