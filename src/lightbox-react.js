@@ -1063,12 +1063,13 @@ class LightboxReact extends Component {
     }
 
     handleKeyUpEventEvent (event) {
-        var element, val
+        var element, val, rect
+        var parentElement = document.getElementsByClassName('image-current')[0]
+        element = parentElement.children.length > 0 ? parentElement[0] : parentElement
+        rect = element.getBoundingClientRect()
         if (this.state.zoomLevel > MIN_ZOOM_LEVEL) {
             switch (event.which) {
                 case KEYS.UP_ARROW:
-                    element = document.getElementsByClassName('image-current')[0]
-                    var rect = element.getBoundingClientRect();
                     if (!(rect.bottom <= (window.innerHeight || document.documentElement.clientHeight))) {
                         val = this.state.offsetY + 5
                         this.setState({
@@ -1077,8 +1078,6 @@ class LightboxReact extends Component {
                     }
                     break;
                 case KEYS.DOWN_ARROW:
-                    element = document.getElementsByClassName('image-current')[0]
-                    var rect = element.getBoundingClientRect();
                     if (!(rect.top >= 0)) {
                         val = this.state.offsetY - 5
                         this.setState({
@@ -1087,8 +1086,6 @@ class LightboxReact extends Component {
                     }
                     break;
                 case KEYS.RIGHT_ARROW:
-                    element = document.getElementsByClassName('image-current')[0]
-                    var rect = element.getBoundingClientRect();
                     if (!(rect.left >= 0)) {
                         val = this.state.offsetX - 5
                         this.setState({
@@ -1097,8 +1094,6 @@ class LightboxReact extends Component {
                     }
                     break;
                 case KEYS.LEFT_ARROW:
-                    element = document.getElementsByClassName('image-current')[0]
-                    var rect = element.getBoundingClientRect();
                     if (!(rect.right <= (window.innerWidth || document.documentElement.clientWidth))) {
                         val = this.state.offsetX + 5
                         this.setState({
