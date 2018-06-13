@@ -323,8 +323,8 @@ class LightboxReact extends Component {
 
         this.setState({
             zoomLevel: nextZoomLevel,
-            offsetX:   nextOffsetX,
-            offsetY:   nextOffsetY,
+            offsetX:   0,
+            offsetY:   0,
         });
     }
 
