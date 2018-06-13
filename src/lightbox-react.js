@@ -1067,24 +1067,44 @@ class LightboxReact extends Component {
         if (this.state.zoomLevel > MIN_ZOOM_LEVEL) {
             switch (event.which) {
                 case KEYS.UP_ARROW:
-                    element = document.getElementById('item-holder')
-                    val = (element.style.top === '' ? 0 : parseInt(element.style.top))  - 5 + 'px'
-                    element.style.top = val
+                    element = document.getElementsByClassName('image-current')[0]
+                    var rect = element.getBoundingClientRect();
+                    if (!(rect.bottom <= (window.innerHeight || document.documentElement.clientHeight))) {
+                        val = this.state.offsetY + 5
+                        this.setState({
+                            offsetY:   val,
+                        });
+                    }
                     break;
                 case KEYS.DOWN_ARROW:
-                    element = document.getElementById('item-holder')
-                    val = (element.style.bottom === '' ? 0 : parseInt(element.style.bottom)) - 5 + 'px'
-                    element.style.bottom = val
+                    element = document.getElementsByClassName('image-current')[0]
+                    var rect = element.getBoundingClientRect();
+                    if (!(rect.top >= 0)) {
+                        val = this.state.offsetY - 5
+                        this.setState({
+                            offsetY:   val,
+                        });
+                    }
                     break;
                 case KEYS.RIGHT_ARROW:
-                    element = document.getElementById('item-holder')
-                    val = (element.style.right === '' ? 0 : parseInt(element.style.right)) - 5 + 'px'
-                    element.style.right = val
+                    element = document.getElementsByClassName('image-current')[0]
+                    var rect = element.getBoundingClientRect();
+                    if (!(rect.left >= 0)) {
+                        val = this.state.offsetX - 5
+                        this.setState({
+                            offsetX:   val,
+                        });
+                    }
                     break;
                 case KEYS.LEFT_ARROW:
-                    element = document.getElementById('item-holder')
-                    val = (element.style.left === '' ? 0 : parseInt(element.style.left)) - 5 + 'px'
-                    element.style.left = val
+                    element = document.getElementsByClassName('image-current')[0]
+                    var rect = element.getBoundingClientRect();
+                    if (!(rect.right <= (window.innerWidth || document.documentElement.clientWidth))) {
+                        val = this.state.offsetX + 5
+                        this.setState({
+                            offsetX:   val,
+                        });
+                    }
                     break;
                 default:
                     break;
