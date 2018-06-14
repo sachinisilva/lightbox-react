@@ -25,6 +25,11 @@ $maxCaptionHeight: 150px;
     opacity: 0;
 }
 
+button:focus {
+    border-color: white;
+    border-style: ridge ;
+}
+
 .inner {
     position: absolute;
     top: 0;

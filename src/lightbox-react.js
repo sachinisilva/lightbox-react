@@ -1078,7 +1078,7 @@ class LightboxReact extends Component {
                     }
                     break;
                 case KEYS.DOWN_ARROW:
-                    if (!(rect.top >= 0)) {
+                    if ((rect.top <= document.getElementsByClassName('toolbar')[0].clientHeight)) {
                         val = this.state.offsetY - 5
                         this.setState({
                             offsetY:   val,
