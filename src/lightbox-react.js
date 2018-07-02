@@ -98,7 +98,7 @@ class LightboxReact extends Component {
         this.requestClose             = this.requestClose.bind(this);
         this.requestMoveNext          = this.requestMoveNext.bind(this);
         this.requestMovePrev          = this.requestMovePrev.bind(this);
-        this.handleKeyUpEventEvent    = this.handleKeyUpEventEvent.bind(this)
+        this.handleKeyUpEvent         = this.handleKeyUpEvent.bind(this);
     }
 
     componentWillMount() {
@@ -229,7 +229,9 @@ class LightboxReact extends Component {
         clearTimeout(id);
     }
 
-    // Attach key and mouse input events
+    /**
+     * Attach key and mouse input events
+     */
     attachListeners() {
         if (!this.listenersAttached && typeof window !== 'undefined') {
             window.addEventListener('resize', this.handleWindowResize);
@@ -240,9 +242,9 @@ class LightboxReact extends Component {
             window.addEventListener('pointermove', this.handlePointerEvent);
             window.addEventListener('pointerup', this.handlePointerEvent);
             window.addEventListener('pointercancel', this.handlePointerEvent);
-            window.top.addEventListener('keydown', this.handleKeyUpEventEvent);
+            window.top.addEventListener('keydown', this.handleKeyUpEvent);
             // Have to add an extra mouseup handler to catch mouseup events outside of the window
-            //  if the page containing the lightbox is displayed in an iframe
+            // if the page containing the lightbox is displayed in an iframe
             if (isInSameOriginIframe()) {
                 window.top.addEventListener('mouseup', this.handleMouseUp);
                 window.top.addEventListener('touchend', this.handleTouchEnd);
@@ -251,14 +253,19 @@ class LightboxReact extends Component {
                 window.top.addEventListener('pointermove', this.handlePointerEvent);
                 window.top.addEventListener('pointerup', this.handlePointerEvent);
                 window.top.addEventListener('pointercancel', this.handlePointerEvent);
-                window.top.addEventListener('keydown', this.handleKeyUpEventEvent);
+                window.top.addEventListener('keydown', this.handleKeyUpEvent);
             }
 
             this.listenersAttached = true;
         }
     }
 
-    // Change zoom level
+    /**
+     * Change the zoom level
+     * @param zoomLevel
+     * @param clientX
+     * @param clientY
+     */
     changeZoom(zoomLevel, clientX, clientY) {
         // Ignore if zoom disabled
         if (!this.props.enableZoom) {
@@ -328,12 +335,19 @@ class LightboxReact extends Component {
         });
     }
 
+    /**
+     * close the light box when clicks on the background
+     * @param event
+     */
     closeIfClickInner(event) {
         if (!this.preventInnerClose && event.target.className.search(/\bril-inner\b/) > -1) {
             this.requestClose(event);
         }
     }
 
+    /**
+     * avoid closing the lightbox when background is clicked
+     */
     setPreventInnerClose() {
         if (this.preventInnerCloseTimeout) {
             this.clearTimeout(this.preventInnerCloseTimeout);
@@ -349,7 +363,7 @@ class LightboxReact extends Component {
     detachListeners() {
         if (this.listenersAttached) {
             window.removeEventListener('resize', this.handleWindowResize);
-            window.removeEventListener('keydown', this.handleKeyUpEventEvent);
+            window.removeEventListener('keydown', this.handleKeyUpEvent);
             window.removeEventListener('mouseup', this.handleMouseUp);
             window.removeEventListener('touchend', this.handleTouchEnd);
             window.removeEventListener('touchcancel', this.handleTouchEnd);
@@ -365,7 +379,7 @@ class LightboxReact extends Component {
                 window.top.removeEventListener('pointermove', this.handlePointerEvent);
                 window.top.removeEventListener('pointerup', this.handlePointerEvent);
                 window.top.removeEventListener('pointercancel', this.handlePointerEvent);
-                window.top.removeEventListener('keydown', this.handleKeyUpEventEvent);
+                window.top.removeEventListener('keydown', this.handleKeyUpEvent);
             }
 
             this.listenersAttached = false;
@@ -387,17 +401,7 @@ class LightboxReact extends Component {
         } else if (isReact.component(this.props[srcType]) || isReact.element(this.props[srcType])) {
             if (document.querySelectorAll('.inner').length > 0) {
                 const component = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
-                : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
-                let componentWidth = component.offsetWidth;
-                let componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth;
-                let fontSize = 18;
-
-                while (componentWidth >= componentWrapperWidth && fontSize > 4) {
-                    component.style.fontSize = `${fontSize}px`;
-                    componentWrapperWidth = document.querySelectorAll('.inner')[0].offsetWidth;
-                    componentWidth = component.offsetWidth;
-                    fontSize--;
-                }
+                : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0].childNodes[0];
                 fitSizes = this.getFitSizes(component.offsetWidth, component.offsetHeight, true);
             }
         } else {
@@ -411,7 +415,13 @@ class LightboxReact extends Component {
         };
     }
 
-    // Get sizing for when an image is larger than the window
+    /**
+     * Get sizing for when an image is larger than the window
+     * @param width
+     * @param height
+     * @param stretch
+     * @returns {{width: number, height: number}}
+     */
     getFitSizes(width, height, stretch) {
         const boxSize = this.getLightboxRect();
         let maxHeight = boxSize.height - (this.props.imagePadding * 2);
@@ -471,7 +481,10 @@ class LightboxReact extends Component {
         };
     }
 
-    // Get image src types
+    /**
+     * Get image src types
+     * @returns {[]}
+     */
     getSrcTypes() {
         return [
             {
@@ -531,7 +544,7 @@ class LightboxReact extends Component {
      */
     handleKeyInput(event) {
         // this will prevent key up event in order to avoid that commented this
-        //event.stopPropagation();
+        // event.stopPropagation();
 
         // Ignore key input during animations
         if (this.isAnimating()) {
@@ -558,34 +571,34 @@ class LightboxReact extends Component {
 
         switch (keyCode) {
             // ESC key closes the lightbox
-            case KEYS.ESC:
-                event.preventDefault();
-                this.requestClose(event);
-                break;
+        case KEYS.ESC:
+            event.preventDefault();
+            this.requestClose(event);
+            break;
 
             // Left arrow key moves to previous image
-            case KEYS.LEFT_ARROW:
-                if (!this.props.prevSrc || this.state.zoomLevel !== MIN_ZOOM_LEVEL) {
-                    return;
-                }
+        case KEYS.LEFT_ARROW:
+            if (!this.props.prevSrc || this.state.zoomLevel !== MIN_ZOOM_LEVEL) {
+                return;
+            }
 
-                event.preventDefault();
-                this.keyPressed = true;
-                this.requestMovePrev(event);
-                break;
+            event.preventDefault();
+            this.keyPressed = true;
+            this.requestMovePrev(event);
+            break;
 
             // Right arrow key moves to next image
-            case KEYS.RIGHT_ARROW:
-                if (!this.props.nextSrc || this.state.zoomLevel !== MIN_ZOOM_LEVEL) {
-                    return;
-                }
+        case KEYS.RIGHT_ARROW:
+            if (!this.props.nextSrc || this.state.zoomLevel !== MIN_ZOOM_LEVEL) {
+                return;
+            }
 
-                event.preventDefault();
-                this.keyPressed = true;
-                this.requestMoveNext(event);
-                break;
+            event.preventDefault();
+            this.keyPressed = true;
+            this.requestMoveNext(event);
+            break;
 
-            default:
+        default:
         }
     }
 
@@ -696,21 +709,21 @@ class LightboxReact extends Component {
             return true;
         }
         switch (source) {
-            case SOURCE_MOUSE:
-                return false;
-            case SOURCE_TOUCH:
-                this.eventsSource = SOURCE_TOUCH;
+        case SOURCE_MOUSE:
+            return false;
+        case SOURCE_TOUCH:
+            this.eventsSource = SOURCE_TOUCH;
+            this.filterPointersBySource();
+            return true;
+        case SOURCE_POINTER:
+            if (this.eventsSource === SOURCE_MOUSE) {
+                this.eventsSource = SOURCE_POINTER;
                 this.filterPointersBySource();
                 return true;
-            case SOURCE_POINTER:
-                if (this.eventsSource === SOURCE_MOUSE) {
-                    this.eventsSource = SOURCE_POINTER;
-                    this.filterPointersBySource();
-                    return true;
-                }
-                return false;
-            default:
-                return false;
+            }
+            return false;
+        default:
+            return false;
         }
     }
 
@@ -777,21 +790,21 @@ class LightboxReact extends Component {
     handlePointerEvent(event) {
         if (this.shouldHandleEvent(SOURCE_POINTER)) {
             switch (event.type) {
-                case 'pointerdown':
+            case 'pointerdown':
                     // commented this to facilitate to drag the tables after zooming
-                    this.addPointer(LightboxReact.parsePointerEvent(event));
-                    this.multiPointerStart(event);
-                    break;
-                case 'pointermove':
-                    this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
-                    break;
-                case 'pointerup':
-                case 'pointercancel':
-                    this.removePointer(LightboxReact.parsePointerEvent(event));
-                    this.multiPointerEnd(event);
-                    break;
-                default:
-                    break;
+                this.addPointer(LightboxReact.parsePointerEvent(event));
+                this.multiPointerStart(event);
+                break;
+            case 'pointermove':
+                this.multiPointerMove(event, [LightboxReact.parsePointerEvent(event)]);
+                break;
+            case 'pointerup':
+            case 'pointercancel':
+                this.removePointer(LightboxReact.parsePointerEvent(event));
+                this.multiPointerEnd(event);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -805,7 +818,7 @@ class LightboxReact extends Component {
     }
 
     handleTouchMove(event) {
-        event.preventDefault()
+        event.preventDefault();
         if (this.shouldHandleEvent(SOURCE_TOUCH)) {
             this.multiPointerMove(event, [].map.call(event.changedTouches,
                 eventTouch => LightboxReact.parseTouchPointer(eventTouch)));
@@ -831,40 +844,40 @@ class LightboxReact extends Component {
     multiPointerStart(event) {
         this.handleEnd(null);
         switch (this.pointerList.length) {
-            case 1: {
-                event.preventDefault();
-                this.decideMoveOrSwipe(this.pointerList[0]);
-                break;
-            }
-            case 2: {
-                event.preventDefault();
-                this.handlePinchStart(this.pointerList);
-                break;
-            }
-            default:
-                break;
+        case 1: {
+            event.preventDefault();
+            this.decideMoveOrSwipe(this.pointerList[0]);
+            break;
+        }
+        case 2: {
+            event.preventDefault();
+            this.handlePinchStart(this.pointerList);
+            break;
+        }
+        default:
+            break;
         }
     }
 
     multiPointerMove(event, pointerList) {
         switch (this.currentAction) {
-            case ACTION_MOVE: {
-                event.preventDefault();
-                this.handleMove(pointerList[0]);
-                break;
-            }
-            case ACTION_SWIPE: {
-                event.preventDefault();
-                this.handleSwipe(pointerList[0]);
-                break;
-            }
-            case ACTION_PINCH: {
-                event.preventDefault();
-                this.handlePinch(pointerList);
-                break;
-            }
-            default:
-                break;
+        case ACTION_MOVE: {
+            event.preventDefault();
+            this.handleMove(pointerList[0]);
+            break;
+        }
+        case ACTION_SWIPE: {
+            event.preventDefault();
+            this.handleSwipe(pointerList[0]);
+            break;
+        }
+        case ACTION_PINCH: {
+            event.preventDefault();
+            this.handlePinch(pointerList);
+            break;
+        }
+        default:
+            break;
         }
     }
 
@@ -874,38 +887,38 @@ class LightboxReact extends Component {
             this.handleEnd(event);
         }
         switch (this.pointerList.length) {
-            case 0: {
-                this.eventsSource = SOURCE_ANY;
-                break;
-            }
-            case 1: {
-                event.preventDefault();
-                this.decideMoveOrSwipe(this.pointerList[0]);
-                break;
-            }
-            case 2: {
-                event.preventDefault();
-                this.handlePinchStart(this.pointerList);
-                break;
-            }
-            default:
-                break;
+        case 0: {
+            this.eventsSource = SOURCE_ANY;
+            break;
+        }
+        case 1: {
+            event.preventDefault();
+            this.decideMoveOrSwipe(this.pointerList[0]);
+            break;
+        }
+        case 2: {
+            event.preventDefault();
+            this.handlePinchStart(this.pointerList);
+            break;
+        }
+        default:
+            break;
         }
     }
 
     handleEnd(event) {
         switch (this.currentAction) {
-            case ACTION_MOVE:
-                this.handleMoveEnd(event);
-                break;
-            case ACTION_SWIPE:
-                this.handleSwipeEnd(event);
-                break;
-            case ACTION_PINCH:
-                this.handlePinchEnd(event);
-                break;
-            default:
-                break;
+        case ACTION_MOVE:
+            this.handleMoveEnd(event);
+            break;
+        case ACTION_SWIPE:
+            this.handleSwipeEnd(event);
+            break;
+        case ACTION_PINCH:
+            this.handlePinchEnd(event);
+            break;
+        default:
+            break;
         }
     }
 
@@ -1062,47 +1075,51 @@ class LightboxReact extends Component {
         this.resizeTimeout = this.setTimeout(this.forceUpdate.bind(this), 100);
     }
 
-    handleKeyUpEventEvent (event) {
-        var element, val, rect
-        var parentElement = document.getElementsByClassName('image-current')[0]
-        element = parentElement.children.length > 0 ? parentElement.childNodes[0].childNodes[0] : parentElement
-        rect = element.getBoundingClientRect()
+    handleKeyUpEvent(event) {
+        let val;
+        const parentElement = document.getElementsByClassName('image-current')[0];
+        const element = parentElement.children.length > 0 ? parentElement.childNodes[0].childNodes[0] : parentElement;
+        const rect = element.getBoundingClientRect();
         if (this.state.zoomLevel > MIN_ZOOM_LEVEL) {
             switch (event.which) {
-                case KEYS.UP_ARROW:
-                    if (!(rect.bottom <= (window.innerHeight || document.documentElement.clientHeight))) {
-                        val = this.state.offsetY + 5
-                        this.setState({
-                            offsetY:   val,
-                        });
-                    }
-                    break;
-                case KEYS.DOWN_ARROW:
-                    if ((rect.top <= document.getElementsByClassName('toolbar')[0].clientHeight)) {
-                        val = this.state.offsetY - 5
-                        this.setState({
-                            offsetY:   val,
-                        });
-                    }
-                    break;
-                case KEYS.RIGHT_ARROW:
-                    if (!(rect.left >= 0)) {
-                        val = this.state.offsetX - 5
-                        this.setState({
-                            offsetX:   val,
-                        });
-                    }
-                    break;
-                case KEYS.LEFT_ARROW:
-                    if (!(rect.right <= (window.innerWidth || document.documentElement.clientWidth))) {
-                        val = this.state.offsetX + 5
-                        this.setState({
-                            offsetX:   val,
-                        });
-                    }
-                    break;
-                default:
-                    break;
+            case KEYS.UP_ARROW:
+                event.preventDefault();
+                if (!(rect.bottom <= (window.innerHeight || document.documentElement.clientHeight))) {
+                    val = this.state.offsetY + 5;
+                    this.setState({
+                        offsetY: val,
+                    });
+                }
+                break;
+            case KEYS.DOWN_ARROW:
+                event.preventDefault();
+                if ((rect.top <= document.getElementsByClassName('toolbar')[0].clientHeight)) {
+                    val = this.state.offsetY - 5;
+                    this.setState({
+                        offsetY: val
+                    });
+                }
+                break;
+            case KEYS.RIGHT_ARROW:
+                event.preventDefault();
+                if (!(rect.left >= 0)) {
+                    val = this.state.offsetX - 5;
+                    this.setState({
+                        offsetX: val
+                    });
+                }
+                break;
+            case KEYS.LEFT_ARROW:
+                event.preventDefault();
+                if (!(rect.right <= (window.innerWidth || document.documentElement.clientWidth))) {
+                    val = this.state.offsetX + 5;
+                    this.setState({
+                        offsetX: val,
+                    });
+                }
+                break;
+            default:
+                break;
             }
         }
     }
@@ -1115,6 +1132,51 @@ class LightboxReact extends Component {
         this.changeZoom(this.state.zoomLevel - ZOOM_BUTTON_INCREMENT_SIZE);
     }
 
+    /**
+     * resize the table depending on the port view
+     * @returns {{src: string, height, width}}
+     */
+    getBestTableInfo() {
+        let fitSizes = {};
+        if (document.querySelectorAll('.inner').length > 0) {
+            const tableComponent = this.props.prevSrc && this.props.nextSrc ? document.querySelectorAll('.inner')[0].childNodes[1].childNodes[0]
+                : document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0].childNodes[0];
+            const wrapper =  document.querySelectorAll('.inner')[0].childNodes[0].childNodes[0];
+
+            tableComponent.style.transform = '';
+            tableComponent.style.position = 'relative';
+
+            const availableWidth = wrapper.clientWidth;
+
+            let actualTableWidth = tableComponent.offsetWidth;
+            let actualTableHeight = tableComponent.offsetHeight;
+
+            const computedStyle = getComputedStyle(tableComponent); /** Measure all table values in pixels */
+            actualTableWidth += Math.ceil(parseInt(computedStyle.marginLeft) + parseInt(computedStyle.marginRight));
+            actualTableHeight += Math.ceil(parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom));
+
+            /** Calculate the scaling factor */
+            const scale = availableWidth / actualTableWidth;
+
+            /** If the scale is < 1, then scale the table, otherwise put .scaling-canvas back to defaults */
+            if (scale < 1) {
+                tableComponent.style.width = actualTableWidth + 'px';
+                tableComponent.style.transformOrigin = 'top left';
+                tableComponent.style.transform = 'scale(' + scale + ')';
+                wrapper.style.height = (actualTableHeight * scale) + 'px';
+                wrapper.style.width = availableWidth + 'px';
+            } else {
+                wrapper.style.position = 'relative';
+                wrapper.style.width = '';
+            }
+            fitSizes = this.getFitSizes(tableComponent.offsetWidth, tableComponent.offsetHeight, true);
+        }
+        return {
+            src:    'mainSrc',
+            height: fitSizes.height,
+            width:  fitSizes.width,
+        };
+    }
     handleCaptionMousewheel(event) {
         event.stopPropagation();
 
@@ -1132,17 +1194,29 @@ class LightboxReact extends Component {
         }
     }
 
-    // Detach key and mouse input events
+    /**
+     * Detach key and mouse input events
+     * @returns {boolean|*}
+     */
     isAnimating() {
         return this.state.shouldAnimate || this.state.isClosing;
     }
 
-    // Check if image is loaded
+    /**
+     * Check if image is loaded
+     * @param imageSrc
+     * @returns {*|boolean}
+     */
     isImageLoaded(imageSrc) {
         return imageSrc && (imageSrc in this.imageCache) && this.imageCache[imageSrc].loaded;
     }
 
-    // Load image from src and call callback with image width and height on load
+    /**
+     * Check if image is loaded
+     * @param srcType
+     * @param imageSrc
+     * @param done
+     */
     loadImage(srcType, imageSrc, done) {
         // Return the image info if it is already cached
         if (this.isImageLoaded(imageSrc)) {
@@ -1411,7 +1485,7 @@ class LightboxReact extends Component {
                         style={imageStyle}
                         src={imageSrc}
                         key={imageSrc + keyEndings[srcType]}
-                        alt={(typeof imageTitle === 'string' ? imageTitle : translate('Image'))}
+                        alt={(typeof imageTitle === 'string' ? imageTitle : translate(this.props.mainSrcAlt))}
                         draggable={false}
                     />
                 );
@@ -1421,7 +1495,7 @@ class LightboxReact extends Component {
         const addComponent = (srcType, imageClass, baseStyle = {}) => {
             const imageStyle = { ...baseStyle, ...transitionStyle };
             let DisplayItem = this.props[srcType];
-            const bestImageInfo = this.getBestImageForType(srcType);
+            const bestImageInfo = this.getBestTableInfo(srcType);
 
             if (zoomLevel > MIN_ZOOM_LEVEL) {
                 imageStyle.cursor = 'move';
@@ -1544,8 +1618,8 @@ class LightboxReact extends Component {
                 onAfterOpen={() => this.outerEl && this.outerEl.focus()} // Focus on the div with key handlers
                 style={modalStyle}
                 ariaHideApp={false}
-                role='dialog'
-                contentLabel='You are currently in a Lightbox'
+                role="dialog"
+                contentLabel="You are currently in a Lightbox"
             >
                 <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                     // Floating modal with closing animations
@@ -1570,8 +1644,7 @@ class LightboxReact extends Component {
 
                     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
                         // Image holder
-                        tabIndex={0}
-                        id='item-holder'
+                        id="item-holder"
                         className={`inner ril-inner ${styles.inner}`}
                         onClick={clickOutsideToClose ? this.closeIfClickInner : noop}
                     >
@@ -1811,6 +1884,8 @@ LightboxReact.propTypes = {
 
     // Set to false to disable zoom functionality and hide zoom buttons
     enableZoom: PropTypes.bool,
+
+    mainSrcAlt: PropTypes.string
 };
 
 LightboxReact.defaultProps = {
@@ -1834,7 +1909,8 @@ LightboxReact.defaultProps = {
 
     zoomOutButtonAriaLabel: 'zoom out',
     zoomInButtonAriaLabel: 'zoom in, After zoom in, use arrow keys to move the image from left to right and top to bottom',
-    closeButtonAriaLabel: 'close'
+    closeButtonAriaLabel: 'close',
+    mainSrcAlt: 'Image'
 };
 
 export default LightboxReact;
