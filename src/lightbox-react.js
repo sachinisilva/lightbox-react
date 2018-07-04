@@ -1166,8 +1166,8 @@ class LightboxReact extends Component {
                 wrapper.style.height = (actualTableHeight * scale) + 'px';
                 wrapper.style.width = availableWidth + 'px';
             } else {
-                wrapper.style.position = 'relative';
-                wrapper.style.width = '';
+                tableComponent.style.position = 'relative';
+                tableComponent.style.width = '';
             }
             fitSizes = this.getFitSizes(tableComponent.offsetWidth, tableComponent.offsetHeight, true);
         }
